@@ -296,6 +296,14 @@ try {
         }
         log("Home page loaded");
         window.ccPorted.baseRendering = false;
+        createPopup({
+            title: 'Hiring!',
+            message: "We are hiring! We are looking for interns to help add games and manage the community.",
+            cta: {
+                text: "Apply",
+                link: "https://forms.gle/kWJRXuYN93unLkZRA"
+            }
+        });
         loadAds();
     }
     async function incrementClicks(gameID) {
