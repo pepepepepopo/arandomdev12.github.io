@@ -29,14 +29,15 @@ class Leaderboard {
         }
         this.loading = false;
         var rp = false;
-        var scores = data.map((row) => {
+        var scores = data.map((row, i) => {
             if (row.u_profiles.id == 'guest' || row.u_profiles.id == window.ccPorted?.user?.id) {
                 rp = true;
             }
             return {
                 score: row.score,
                 id: row.u_profiles.id,
-                display_name: row.u_profiles.display_name
+                display_name: row.u_profiles.display_name,
+                rank: i
             }
 
         });
