@@ -106,7 +106,10 @@ async function init() {
     if (localStorage.getItem("chat-convo-all-muted") !== 1 && user) {
         setupRealtime();
     }
-
+    if (localStorage.getItem("[ns-ccported]_hiring_popup") !== "yes") {
+        createPopup();
+        localStorage.setItem("[ns-ccported]_hiring_popup", "yes", true);
+    };
     if (!seenPopup) {
         setTimeout(createPopup, 120000);
     }
