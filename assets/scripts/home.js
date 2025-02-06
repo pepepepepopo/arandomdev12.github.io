@@ -7,7 +7,7 @@ try {
     const allTags = document.querySelectorAll(".tag");
     const sortButton = document.getElementById("sort");
     const pickForMe = document.getElementById("pickforme");
-    const addGameRequestButton = document.getElementById("addGameRequestButton");
+    // const addGameRequestButton = document.getElementById("addGameRequestButton");
     const sortDirectionText = document.getElementById("order");
     const header = document.querySelector('header');
     const toggleBtn = document.querySelector('.toggle-btn');
@@ -123,11 +123,11 @@ try {
             window.ccPorted.serverBlocked = true;
             window.ccPorted.baseRendering = true;
 
-            createNotif({
-                message: "Something is blocking the connection to the server. You will not be able to login, which means that high scores will not be saved and your games will not save across domains and devices.",
-                cta: false,
-                autoClose: 7
-            });
+            // createNotif({
+                // message: "Something is blocking the connection to the server. You will not be able to login, which means that high scores will not be saved and your games will not save across domains and devices.",
+                // cta: false,
+                // autoClose: 7
+        // });
             const gamesJson = await importJSON("/games.json");
             const { games } = gamesJson;
             log(`Games ${games.length} found.`);
@@ -168,23 +168,27 @@ try {
             loadPinnedStates();
             log("Loading ROMs")
             document.querySelector(".cards").classList.remove("loading");
-            let romsJSON = await importJSON("/roms/roms.json");
-            let unseenRoms = [];
-            log(`Roms found (length not calculated - reason: deep)`);
-            Object.keys(romsJSON).forEach(key => {
-                const romsList = romsJSON[key];
-                romsList.forEach(([romLink, romID]) => {
-                    const name = `${key}-${normalize(romID)}`;
-                    if (!checkRomSeen(name)) unseenRoms.push([key, romID]);
-                    markGameSeen(name);
-                })
-            });
-            if (unseenRoms.length > 0) {
-                if (unseenRoms.length == 1) {
-                    document.getElementById("romLinks").innerHTML += ` (${unseenRoms[0][0]}/${unseenRoms[0][1]} New!)`;
-                } else {
-                    document.getElementById("romLinks").innerHTML += ` (${unseenRoms.length} New!)`;
-                }
+            try {
+                let romsJSON = await importJSON("/roms/roms.json");
+                let unseenRoms = [];
+                log(`Roms found (length not calculated - reason: deep)`);
+                Object.keys(romsJSON).forEach(key => {
+                    const romsList = romsJSON[key];
+                    romsList.forEach(([romLink, romID]) => {
+                        const name = `${key}-${normalize(romID)}`;
+                        if (!checkRomSeen(name)) unseenRoms.push([key, romID]);
+                        markGameSeen(name);
+                    })
+                });
+                if (unseenRoms.length > 0) {
+                    if (unseenRoms.length == 1) {
+                        document.getElementById("romLinks").innerHTML += ` (${unseenRoms[0][0]}/${unseenRoms[0][1]} New!)`;
+                    } else {                    document.getElementById("romLinks").innerHTML += ` (${unseenRoms.length} New!)`;
+                        document.getElementById("romLinks").innerHTML += ` (${unseenRoms.length} New!)`;
+                    }
+                }    
+            } catch (e) {
+                log("Failed to load ROMs: " + e);
             }
             if (query.has("q")) {
                 if (query.get("q").length > 0) {
@@ -211,6 +215,15 @@ try {
         setTimeout(() => {
             baseRender();
         }, 3000);
+        
+        createPopup({
+            title: 'Hiring!',
+            message: "We are hiring! We are looking for interns to help add games and manage the community.",
+            cta: {
+                text: "Apply",
+                link: "https://forms.gle/kWJRXuYN93unLkZRA"
+            }
+        });
         const gamesJson = await importJSON("/games.json");
         const { games } = gamesJson;
         log(`Got ${games.length} games`);
@@ -263,22 +276,26 @@ try {
         loadPinnedStates();
         document.querySelector(".cards").classList.remove("loading");
         window.ccPorted.cardsRendered = true;
-        let romsJSON = await importJSON("/roms/roms.json");
-        let unseenRoms = []
-        Object.keys(romsJSON).forEach(key => {
-            const romsList = romsJSON[key];
-            romsList.forEach(([romLink, romID]) => {
-                const name = `${key}-${normalize(romID)}`;
-                if (!checkRomSeen(name)) unseenRoms.push([key, romID]);
-                markGameSeen(name);
-            })
-        });
-        if (unseenRoms.length > 0) {
-            if (unseenRoms.length == 1) {
-                document.getElementById("romLinks").innerHTML += ` (${unseenRoms[0][0]}/${unseenRoms[0][1]} New!)`
-            } else {
-                document.getElementById("romLinks").innerHTML += ` (${unseenRoms.length} New!)`
+        try {
+            let romsJSON = await importJSON("/roms/roms.json");
+            let unseenRoms = []
+            Object.keys(romsJSON).forEach(key => {
+                const romsList = romsJSON[key];
+                romsList.forEach(([romLink, romID]) => {
+                    const name = `${key}-${normalize(romID)}`;
+                    if (!checkRomSeen(name)) unseenRoms.push([key, romID]);
+                    markGameSeen(name);
+                })
+            });
+            if (unseenRoms.length > 0) {
+                if (unseenRoms.length == 1) {
+                    document.getElementById("romLinks").innerHTML += ` (${unseenRoms[0][0]}/${unseenRoms[0][1]} New!)`
+                } else {
+                    document.getElementById("romLinks").innerHTML += ` (${unseenRoms.length} New!)`
+                }
             }
+        } catch (e) {
+            log("Failed to load roms.json: " + e);
         }
         if (query.has("q")) {
             if (query.get("q").length > 0) {
@@ -296,14 +313,6 @@ try {
         }
         log("Home page loaded");
         window.ccPorted.baseRendering = false;
-        createPopup({
-            title: 'Hiring!',
-            message: "We are hiring! We are looking for interns to help add games and manage the community.",
-            cta: {
-                text: "Apply",
-                link: "https://forms.gle/kWJRXuYN93unLkZRA"
-            }
-        });
         loadAds();
     }
     async function incrementClicks(gameID) {
@@ -643,8 +652,7 @@ try {
         position: fixed;
         bottom: 20px;
         right: 20px;
-        max-width: 800px;
-        min-width: 500px;
+        max-width: 100vw;
         background-color: rgb(37,37,37);
         border: 2px solid #333;
         border-radius: 10px;
@@ -866,46 +874,46 @@ try {
         toggleBtn.setAttribute('data-current', newLayout);
         rerenderCards(newLayout);
     });
-    document.addEventListener("keydown", (e) => {
-        if (e.key == "Escape" && window.gameRQPopupOpen) {
-            closePopup();
-        }
-        if (e.key == "Enter" && window.gameRQPopupOpen) {
-            document.getElementById("sendGameRequestButton").click();
-        }
-    });
-    addGameRequestButton.addEventListener("click", () => {
-        createAddGamePopup();
-        const sendButton = document.getElementById("sendGameRequestButton");
-        const nvmdButton = document.getElementById("nvmd");
-        const popup = document.querySelector(".popup");
+    // document.addEventListener("keydown", (e) => {
+        // if (e.key == "Escape" && window.gameRQPopupOpen) {
+            // closePopup();
+        // }
+        // if (e.key == "Enter" && window.gameRQPopupOpen) {
+            // document.getElementById("sendGameRequestButton").click();
+        // }
+    // });
+    // addGameRequestButton.addEventListener("click", () => {
+        // createAddGamePopup();
+        // const sendButton = document.getElementById("sendGameRequestButton");
+        // const nvmdButton = document.getElementById("nvmd");
+        // const popup = document.querySelector(".popup");
 
-        popup.addEventListener("click", (e) => {
-            if (e.target == popup) {
-                closePopup();
-            }
-        });
-        nvmdButton.addEventListener("click", () => {
-            closePopup();
-        });
-        sendButton.addEventListener("click", async () => {
-            const input = document.getElementById("gameRequestInput");
-            try {
+        // popup.addEventListener("click", (e) => {
+            // if (e.target == popup) {
+                // closePopup();
+            // }
+        // });
+        // nvmdButton.addEventListener("click", () => {
+            // closePopup();
+        // });
+        // sendButton.addEventListener("click", async () => {
+            // const input = document.getElementById("gameRequestInput");
+            // try {
 
-                if (input.value.toLowerCase().includes("roblox")) {
-                    alert("20 game requests for roblox are submitted every day. Please no more. Thanks");
-                    closePopup();
-                    return;
-                }
-                await addGameRequest(input.value);
-            } catch (e) {
+                // if (input.value.toLowerCase().includes("roblox")) {
+                    // alert("20 game requests for roblox are submitted every day. Please no more. Thanks");
+                    // closePopup();
+                    // return;
+                // }
+                // await addGameRequest(input.value);
+            // } catch (e) {
                 // alert("An error occurred while sending your request. Please try again later.")
-                log("error" + e);
-            }
-            closePopup();
-        });
+                // log("error" + e);
+            // }
+            // closePopup();
+        // });
 
-    });
+    // });
     pickForMe.addEventListener("click", (e) => {
         var card = pickRandomCard();
         card.click();
