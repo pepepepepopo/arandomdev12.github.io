@@ -425,8 +425,7 @@ window.addEventListener("load", (e) => {
             } else {
                 listItem.style.color = "#ffffff";
             }
-
-            const displayName = entry.display_name.length > 10 ? entry.display_name.substring(0, 9) + "..." : entry.display_name;
+            const displayName = entry.display_name.length > 20 ? entry.display_name.substring(0, 19) + "..." : entry.display_name;
             const score = entry.score;
             listItem.textContent = `${displayName}: ${score}`;
             leaderboard.appendChild(listItem);
