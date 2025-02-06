@@ -211,12 +211,12 @@
                 {
                     "name": "CCPorted",
                     "pre": "Minecraft (1.8.8)",
-                    "link": "https://ccported.github.io/eaglercraftwebsite/"
+                    "link": "https://ccported.github.io/eaglercraft/1.8/"
                 },
                 {
                     "name": "CCPorted",
                     "pre": "Minecraft (1.5.2)",
-                    "link": "https://ccported.github.io/mc/1.5.2/"
+                    "link": "https://ccported.github.io/eaglercraft/1.5/"
                 }
             ],
             "tags": [
