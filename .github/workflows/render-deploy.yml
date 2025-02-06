@@ -4,7 +4,7 @@ run-name: Deploying via Render CLI
 on:
   push:
     branches:
-      - gh-pages
+      - master
 jobs:
   Deploy-Render:
       runs-on: ubuntu-latest
