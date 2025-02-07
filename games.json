@@ -18,6 +18,24 @@
                 "strategy"
             ]
         },
+        {
+            "name": "gplus",
+            "fName": "G+ Unblocked Games",
+            "description": "Another site like this one with more games",
+            "image": "/assets/images/game_covers/cookie_clicker.jpg",
+            "online": true,
+            "links": [
+                {
+                    "name": "CCPorted",
+                    "pre": "site 1",
+                    "link": "https://script.google.com/macros/s/AKfycbzi_kfOfoD-KFZjRybNeUL53RbfylQS3kgTMp6fqrYJYwbi_dpEqSx93Py5eyfwVww/exec"
+                }
+            ],
+            "tags": [
+                "casual"
+            ]
+        },
+        
         {    
             "name": "geometry_dash_subzero",
             "fName": "Geometry Dash Subzero",
